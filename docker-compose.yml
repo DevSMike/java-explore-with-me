@@ -3,13 +3,27 @@ services:
   stats-server:
     ports:
       - "9090:9090"
+    environment:
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ewm-stats
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=4315
+    - TZ=Europe/Moscow
 
   stats-db:
     image: postgres:14-alpine
+    container_name: postgres-ewm-stats-db
+    ports:
+    - "6542:5432"
+    environment:
+      - POSTGRES_DB=ewm-stats
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=4315
 
   ewm-service:
     ports:
       - "8080:8080"
+    environment:
+      - CLIENT_URL=http://stats-server:9090
 
   ewm-db:
     image: postgres:14-alpine
