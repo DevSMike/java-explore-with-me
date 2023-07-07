@@ -53,4 +53,16 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>server.StatServerApplication</mainClass> <!-- Замените com.example.MainClass на ваш главный класс -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

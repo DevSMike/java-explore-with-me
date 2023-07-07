@@ -1,10 +1,13 @@
 version: '3.1'
 services:
-  stats-server:
+  stat-server:
+    build: stat-service/stat-server
+    image: stat-server
+    container_name: stat-server
     ports:
-      - "9090:9090"
+      - "8080:8080"
     environment:
-    - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ewm-stats
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/ewm-stats
     - POSTGRES_USER=postgres
     - POSTGRES_PASSWORD=4315
     - TZ=Europe/Moscow
@@ -19,11 +22,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=4315
 
-  ewm-service:
+  ewm-http-client:
+    build: stat-service/ewm-http-client
+    image: ewm-http-client
+    container_name: http-client
     ports:
-      - "8080:8080"
+      - "9090:9090"
     environment:
-      - CLIENT_URL=http://stats-server:9090
+      - STAT_SERVER_URL=http://stats-server:9090
 
-  ewm-db:
-    image: postgres:14-alpine
+    #ewm-db:
+    #image: postgres:14-alpine

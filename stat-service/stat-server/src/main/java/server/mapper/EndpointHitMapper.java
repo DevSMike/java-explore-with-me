@@ -1,4 +1,4 @@
-package mapper;
+package server.mapper;
 
 import dto.HitDto;
 import dto.StatsDto;
