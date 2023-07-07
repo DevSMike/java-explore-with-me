@@ -29,7 +29,7 @@ services:
     ports:
       - "9090:9090"
     environment:
-      - STAT_SERVER_URL=http://stats-server:9090
+      - STAT_SERVER_URL=http://stats-server:8080
 
   ewm-db:
     image: postgres:14-alpine
