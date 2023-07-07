@@ -2,7 +2,6 @@ package http.client.base;
 
 import java.util.Map;
 
-import lombok.NonNull;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,28 +19,26 @@ public class BaseClient {
         return makeAndSendRequestWithoutBody(path, parameters);
     }
 
-    protected <T> ResponseEntity<Object> post(String path, T body) {
-        return makeAndSendRequest(path, body);
+    protected <T> ResponseEntity<Object> post(T body) {
+        return makeAndSendRequest(body);
     }
 
-    private <T> ResponseEntity<Object> makeAndSendRequest(String path, @NonNull T body) {
+    private <T> ResponseEntity<Object> makeAndSendRequest(T body) {
         HttpEntity<T> requestEntity = new HttpEntity<>(body);
         ResponseEntity<Object> serverResponse;
 
         try {
-            serverResponse = rest.exchange(path, HttpMethod.POST, requestEntity, Object.class);
+            serverResponse = rest.exchange("/hit", HttpMethod.POST, requestEntity, Object.class);
         } catch (HttpStatusCodeException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
         }
         return prepareGatewayResponse(serverResponse);
     }
 
-    private <T> ResponseEntity<Object> makeAndSendRequestWithoutBody(String path, @NonNull Map<String, Object> parameters) {
-        HttpEntity<T> requestEntity = new HttpEntity<>(null);
-
+    private ResponseEntity<Object> makeAndSendRequestWithoutBody(String path, Map<String, Object> parameters) {
         ResponseEntity<Object> serverResponse;
         try {
-            serverResponse = rest.exchange(path, HttpMethod.GET, requestEntity, Object.class, parameters);
+            serverResponse = rest.exchange(path, HttpMethod.GET, null, Object.class, parameters);
         } catch (HttpStatusCodeException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsByteArray());
         }
