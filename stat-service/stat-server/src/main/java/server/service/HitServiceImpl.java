@@ -43,7 +43,7 @@ public class HitServiceImpl implements HitService {
             stats.add(toStatsDto("ewm-main-service", uri, hits));
         }
         return stats.stream()
-                .sorted(Comparator.comparingLong(x->-x.getHits()))
+                .sorted(Comparator.comparingLong(x -> -x.getHits()))
                 .collect(Collectors.toList());
     }
 }
