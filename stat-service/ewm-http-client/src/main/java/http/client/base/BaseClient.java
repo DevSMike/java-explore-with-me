@@ -2,6 +2,7 @@ package http.client.base;
 
 import java.util.Map;
 
+import org.springframework.lang.Nullable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,10 @@ public class BaseClient {
     }
 
     protected <T> ResponseEntity<Object> post(String path, T body) {
-        return post(path, null, body);
+        return makeAndSendRequest(HttpMethod.POST, path, null, body);
     }
 
-
-    protected <T> ResponseEntity<Object> post(String path, Map<String, Object> parameters, T body) {
-        return makeAndSendRequest(HttpMethod.POST, path, parameters, body);
-    }
-
-    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, Map<String, Object> parameters, T body) {
+    private <T> ResponseEntity<Object> makeAndSendRequest(HttpMethod method, String path, @Nullable Map<String, Object> parameters, @Nullable T body) {
         HttpEntity<T> requestEntity = new HttpEntity<>(body);
 
         ResponseEntity<Object> serverResponse;
@@ -43,7 +39,6 @@ public class BaseClient {
         }
         return prepareGatewayResponse(serverResponse);
     }
-
 
     private static ResponseEntity<Object> prepareGatewayResponse(ResponseEntity<Object> response) {
         if (response.getStatusCode().is2xxSuccessful()) {
