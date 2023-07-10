@@ -20,6 +20,7 @@ import java.util.List;
 @Validated
 public class StatsController {
 
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final Logger log = LoggerFactory.getLogger(StatsController.class);
     private final StatsClient statsClient;
 
@@ -36,9 +37,9 @@ public class StatsController {
     public ResponseEntity<Object> getStats(@RequestParam String start, @RequestParam String end,
                                            @RequestParam(required = false) List<String> uris, @RequestParam(required = false) Boolean unique) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime startDate = LocalDateTime.parse(start, formatter);
-        LocalDateTime endDate = LocalDateTime.parse(end, formatter);
+
+        LocalDateTime startDate = LocalDateTime.parse(start, DTF);
+        LocalDateTime endDate = LocalDateTime.parse(end, DTF);
 
         if (startDate.isAfter(endDate) || endDate.isBefore(startDate)) {
             throw new IncorrectDataException();
