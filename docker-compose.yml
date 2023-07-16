@@ -5,7 +5,7 @@ services:
     image: stat-server
     container_name: stat-server
     ports:
-      - "8080:8080"
+      - "9090:9090"
     environment:
     - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/ewm-stats
     - POSTGRES_USER=postgres
@@ -23,20 +23,24 @@ services:
       - POSTGRES_PASSWORD=4315
 
   ewm-service:
-    build: stat-service/ewm-http-client
-    image: ewm-http-client
-    container_name: http-client
+    build: ewm-service
+    image: main-service
+    container_name: main-service
     ports:
-      - "9090:9090"
+      - "8080:8080"
     environment:
-      - STAT_SERVER_URL=http://stats-server:8080
+      - STAT_SERVER_URL=http://stats-server:9090
+      - SPRING_DATASOURCE_URL_MAIN = jdbc:postgresql://ewm-db:5432/ewm-main
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=4315
+      - TZ=Europe/Moscow
 
   ewm-db:
     image: postgres:14-alpine
     container_name: postgres-ewm-db
     ports:
-      - "6555:5532"
+      - "6524:5432"
     environment:
-      - POSTGRES_DB=ewm-stats
+      - POSTGRES_DB=ewm-main
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=4315

@@ -12,8 +12,8 @@
     <artifactId>ewm-service</artifactId>
 
     <properties>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -23,15 +23,45 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker-qual</artifactId>
+            <version>3.12.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>ru.practicum</groupId>
+            <artifactId>ewm-dto</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>ru.practicum</groupId>
             <artifactId>ewm-http-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
+
+
     </dependencies>
+
+
+
 </project>

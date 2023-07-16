@@ -33,6 +33,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>42.2.23</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -61,7 +62,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>server.StatServerApplication</mainClass> <!-- Замените com.example.MainClass на ваш главный класс -->
+                    <mainClass>ru.practicum.StatServerApplication</mainClass> <!-- Замените com.example.MainClass на ваш главный класс -->
                 </configuration>
             </plugin>
         </plugins>
