@@ -40,28 +40,34 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.checkerframework</groupId>
             <artifactId>checker-qual</artifactId>
             <version>3.12.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>ru.practicum</groupId>
-            <artifactId>ewm-dto</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>ru.practicum</groupId>
             <artifactId>ewm-http-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
-
     </dependencies>
 
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ru.practicum.ewm.main.EwmServiceApplication</mainClass> <!-- Замените com.example.MainClass на ваш главный класс -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
