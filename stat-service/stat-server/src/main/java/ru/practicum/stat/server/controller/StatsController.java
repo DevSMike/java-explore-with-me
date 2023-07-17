@@ -6,6 +6,8 @@ import ru.practicum.dto.StatsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.stat.server.service.HitService;
+import org.springframework.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class StatsController {
     private final HitService hitService;
 
     @PostMapping("/hit")
+    @ResponseStatus(HttpStatus.CREATED)
     public HitDto createHit(@RequestBody HitDto hitDto) {
         return hitService.createHit(hitDto);
     }
