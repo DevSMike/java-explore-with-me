@@ -10,7 +10,7 @@ services:
     - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/ewm-stats
     - POSTGRES_USER=postgres
     - POSTGRES_PASSWORD=4315
-    - TZ=Europe/Moscow
+   # - TZ=Europe/Moscow
 
   stats-db:
     image: postgres:14-alpine
@@ -33,7 +33,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm-main
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=4315
-      - TZ=Europe/Moscow
+   #   - TZ=Europe/Moscow
 
   ewm-db:
     image: postgres:14-alpine
