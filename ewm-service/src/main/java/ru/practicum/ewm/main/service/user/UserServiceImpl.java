@@ -26,12 +26,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto addUser(UserDto user) {
-        if (user.getEmail() == null || user.getEmail().isBlank()) {
-            throw new IncorrectDataException("Field: email. Error: must not be blank. Value: null");
-        }
-        if (user.getName() == null || user.getName().isBlank()) {
-            throw new IncorrectDataException("Field: name. Error: must not be blank. Value: null");
-        }
         if (user.getName().length() < 2 || user.getName().length() > 250) {
             throw new IncorrectDataException("Field: name. Error: must be > 2 && < 250. Value: " + user.getName().length());
         }

@@ -27,15 +27,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) {
-        if (categoryDto.getName() == null || categoryDto.getName().isBlank()) {
-            throw new IncorrectDataException("Field: name. Error: must not be blank. Value: null");
-        }
         checkNameLength(categoryDto.getName().length());
-
         Category catWithName = categoryRepository.findCategoryByName(categoryDto.getName()).orElse(null);
         if (catWithName != null) {
             throw new ConflictDataException("Field: name. Name must be unique");
         }
+
         Category category = categoryRepository.save(CategoryMapper.toCategory(categoryDto));
         return CategoryMapper.toCategoryDto(category);
     }

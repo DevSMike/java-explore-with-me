@@ -21,6 +21,5 @@ public class Category {
     private long id;
     @Unique
     @Length(max = 50)
-    @Column(name = "name")
     private String name;
 }

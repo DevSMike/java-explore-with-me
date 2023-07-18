@@ -1,5 +1,7 @@
 package ru.practicum.ewm.main.mapper;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.practicum.ewm.main.dto.request.RequestDto;
 import ru.practicum.ewm.main.model.User;
 import ru.practicum.ewm.main.model.event.Event;
@@ -8,6 +10,7 @@ import ru.practicum.ewm.main.model.request.RequestStatus;
 
 import java.time.LocalDateTime;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RequestMapper {
 
     public static Request toRequest(Event event, User requester, RequestStatus status) {

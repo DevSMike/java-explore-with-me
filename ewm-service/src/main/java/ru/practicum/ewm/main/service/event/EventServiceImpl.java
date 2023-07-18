@@ -3,6 +3,8 @@ package ru.practicum.ewm.main.service.event;
 import ru.practicum.dto.HitDto;
 import ru.practicum.ewm.main.dto.event.EventFullDto;
 import ru.practicum.ewm.main.dto.event.NewEventDto;
+import ru.practicum.ewm.main.dto.search.AdminSearchEventsParamsDto;
+import ru.practicum.ewm.main.dto.search.PublicSearchEventsParamsDto;
 import ru.practicum.ewm.main.exception.ConflictDataException;
 import ru.practicum.ewm.main.dto.event.EventShortDto;
 import ru.practicum.ewm.main.exception.IncorrectDataException;
@@ -129,13 +131,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventFullDto> findEventsBySearch(List<Long> userIds, List<Long> categoriesIds, List<String> states,
-                                                 String rangeStart, String rangeEnd, int from, int size) {
-        Pageable page = PageRequest.of(from / size, size);
+    public List<EventFullDto> findEventsBySearch(AdminSearchEventsParamsDto params) {
+        Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
 
         List<EventState> eventStates;
-        if (states != null) {
-            eventStates = states.stream()
+        if (params.getStates() != null) {
+            eventStates = params.getStates().stream()
                     .map(EventState::converToEventState)
                     .collect(Collectors.toList());
         } else {
@@ -145,14 +146,15 @@ public class EventServiceImpl implements EventService {
         LocalDateTime startDate = null;
         LocalDateTime endDate = null;
 
-        if (rangeStart != null) {
-            startDate = EventMapper.toDateFromString(rangeStart);
+        if (params.getRangeStart() != null) {
+            startDate = EventMapper.toDateFromString(params.getRangeStart());
         }
 
-        if (rangeEnd != null) {
-            endDate = EventMapper.toDateFromString(rangeEnd);
+        if (params.getRangeEnd() != null) {
+            endDate = EventMapper.toDateFromString(params.getRangeEnd());
         }
-        return eventRepository.findEventsBySearchWithSpec(userIds, categoriesIds, eventStates, startDate, endDate, page)
+        return eventRepository.findEventsBySearchWithSpec(params.getUserIds(), params.getCategoriesIds(), eventStates,
+                        startDate, endDate, page)
                 .stream()
                 .map(EventMapper::toEventFullDtoFromEvent)
                 .collect(Collectors.toList());
@@ -189,47 +191,45 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventShortDto> findEventsByPublicSearch(String text, List<Long> categories, Boolean paid, String rangeStart,
-                                                        String rangeEnd, Boolean onlyAvailable, String sort, int from,
-                                                        int size, String ip) {
-        saveStat("/events", ip);
+    public List<EventShortDto> findEventsByPublicSearch(PublicSearchEventsParamsDto params) {
+        saveStat("/events", params.getIp());
 
-        Pageable page = PageRequest.of(from / size, size);
+        Pageable page = PageRequest.of(params.getFrom() / params.getSize(), params.getSize());
         LocalDateTime start;
         LocalDateTime end = null;
 
-        if (rangeStart == null) {
+        if (params.getRangeStart() == null) {
             start = LocalDateTime.now();
         } else {
-            start = EventMapper.toDateFromString(rangeStart);
+            start = EventMapper.toDateFromString(params.getRangeStart());
         }
 
-        if (rangeEnd != null) {
-            end = EventMapper.toDateFromString(rangeEnd);
+        if (params.getRangeEnd() != null) {
+            end = EventMapper.toDateFromString(params.getRangeEnd());
             if (start.isAfter(end)) {
                 throw new IncorrectDataException("Field: endDate. Error: конец события не может быть в прошлом");
             }
         }
 
-        if (onlyAvailable == null) {
-            onlyAvailable = false;
+        if (params.getOnlyAvailable() == null) {
+            params.setOnlyAvailable(false);
         }
 
         List<Event> result;
 
-        if (onlyAvailable) {
-            result = eventRepository.findEventsByPublicSearchOnlyAvailableWithSpec(text, categories, paid, start, end,
-                    EventState.PUBLISHED, page);
+        if (params.getOnlyAvailable()) {
+            result = eventRepository.findEventsByPublicSearchOnlyAvailableWithSpec(params.getText(), params.getCategories(),
+                    params.getPaid(), start, end, EventState.PUBLISHED, page);
         } else {
-            result = eventRepository.findEventsByPublicSearchWithSpec(text, categories, paid, start, end,
-                    EventState.PUBLISHED, page);
+            result = eventRepository.findEventsByPublicSearchWithSpec(params.getText(), params.getCategories(), params.getPaid(),
+                    start, end, EventState.PUBLISHED, page);
         }
 
-        if (sort == null) {
-            sort = "EVENT_DATE";
+        if (params.getSort() == null) {
+            params.setSort("EVENT_DATE");
         }
 
-        switch (sort) {
+        switch (params.getSort()) {
             case "EVENT_DATE": {
                 result = result.stream()
                         .sorted(Comparator.comparing(Event::getEventDate))

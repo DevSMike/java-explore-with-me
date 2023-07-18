@@ -29,9 +29,6 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public CompilationResponseDto createCompilation(CompilationDto compilation) {
-        if (compilation.getTitle() == null || compilation.getTitle().isBlank()) {
-            throw new IncorrectDataException("Field: title. Error: must not be blank. Value: null");
-        }
         if (compilation.getTitle().length() > 50) {
             throw new IncorrectDataException("Field: title. Error: must be < 50. Value: >50");
 

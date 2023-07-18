@@ -2,6 +2,7 @@ package ru.practicum.ewm.main.controller.publicApi;
 
 import ru.practicum.ewm.main.dto.event.EventFullDto;
 import ru.practicum.ewm.main.dto.event.EventShortDto;
+import ru.practicum.ewm.main.dto.search.PublicSearchEventsParamsDto;
 import ru.practicum.ewm.main.service.event.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +29,19 @@ public class EventControllerPublic {
                                                  @RequestParam(required = false) String sort, @RequestParam(defaultValue = "0") int from,
                                                  @RequestParam(defaultValue = "10") int size) {
         log.debug("Public: search events");
-        return eventService.findEventsByPublicSearch(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort,
-                from, size, request.getRemoteAddr());
+        PublicSearchEventsParamsDto params = PublicSearchEventsParamsDto.builder()
+                .ip(request.getRemoteAddr())
+                .categories(categories)
+                .onlyAvailable(onlyAvailable)
+                .sort(sort)
+                .text(text)
+                .rangeEnd(rangeEnd)
+                .rangeStart(rangeStart)
+                .from(from)
+                .size(size)
+                .paid(paid)
+                .build();
+        return eventService.findEventsByPublicSearch(params);
     }
 
     @GetMapping("/{eventId}")

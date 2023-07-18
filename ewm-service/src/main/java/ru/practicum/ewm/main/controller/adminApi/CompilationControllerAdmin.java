@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 @RestController
@@ -22,7 +23,7 @@ public class CompilationControllerAdmin {
 
     @PostMapping("/compilations")
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationResponseDto  createCompilation(@RequestBody CompilationDto compilation) {
+    public CompilationResponseDto  createCompilation(@RequestBody @Valid CompilationDto compilation) {
         log.debug("Admin: create compilation");
         return compilationService.createCompilation(compilation);
     }

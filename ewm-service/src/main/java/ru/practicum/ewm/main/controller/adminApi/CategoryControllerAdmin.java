@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -19,7 +21,7 @@ public class CategoryControllerAdmin {
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto createCategory(@RequestBody CategoryDto categoryDto) {
+    public CategoryDto createCategory(@RequestBody @Valid CategoryDto categoryDto) {
         log.debug("Admin: creating category: {}", categoryDto);
         return categoryService.addCategory(categoryDto);
     }

@@ -1,5 +1,7 @@
 package ru.practicum.ewm.main.mapper;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import ru.practicum.ewm.main.dto.compilation.CompilationDto;
 import ru.practicum.ewm.main.dto.compilation.CompilationResponseDto;
 import ru.practicum.ewm.main.dto.event.EventShortDto;
@@ -7,6 +9,7 @@ import ru.practicum.ewm.main.model.Compilation;
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompilationMapper {
 
     public static Compilation toCompilation(CompilationDto compilation) {
