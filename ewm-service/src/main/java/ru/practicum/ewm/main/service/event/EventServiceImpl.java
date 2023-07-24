@@ -30,6 +30,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.practicum.ewm.main.mapper.EventMapper.toDateFromString;
+
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
@@ -69,7 +71,7 @@ public class EventServiceImpl implements EventService {
 
         checkAboutEventInfo(eventDto);
 
-        LocalDateTime eventTime = EventMapper.toDateFromString(eventDto.getEventDate());
+        LocalDateTime eventTime = toDateFromString(eventDto.getEventDate());
         if (LocalDateTime.now().until(eventTime, ChronoUnit.HOURS) < 2) {
             throw new IncorrectDataException("Field: eventDate. Error: должно содержать дату, которая еще не наступила. Value: " + eventDto.getEventDate());
         }
@@ -118,7 +120,7 @@ public class EventServiceImpl implements EventService {
             throw new ConflictDataException("Only pending or canceled events can be changed");
         }
         if (newEvent.getEventDate() != null && !newEvent.getEventDate().isEmpty()) {
-            if (LocalDateTime.now().until(EventMapper.toDateFromString(newEvent.getEventDate()), ChronoUnit.HOURS) < 2) {
+            if (LocalDateTime.now().until(toDateFromString(newEvent.getEventDate()), ChronoUnit.HOURS) < 2) {
                 throw new IncorrectDataException("Field: eventDate. Error: должно содержать дату, которая еще не наступила." +
                         " Value: " + newEvent.getEventDate());
             }
@@ -147,12 +149,13 @@ public class EventServiceImpl implements EventService {
         LocalDateTime endDate = null;
 
         if (params.getRangeStart() != null) {
-            startDate = EventMapper.toDateFromString(params.getRangeStart());
+            startDate = toDateFromString(params.getRangeStart());
         }
 
         if (params.getRangeEnd() != null) {
-            endDate = EventMapper.toDateFromString(params.getRangeEnd());
+            endDate = toDateFromString(params.getRangeEnd());
         }
+
         return eventRepository.findEventsBySearchWithSpec(params.getUserIds(), params.getCategoriesIds(), eventStates,
                         startDate, endDate, page)
                 .stream()
@@ -166,7 +169,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new NoDataException("Event with id = " + eventId + " was not found"));
         LocalDateTime publishedTime = LocalDateTime.now();
         if (event.getEventDate() != null && !event.getEventDate().isEmpty()) {
-            if (publishedTime.until(EventMapper.toDateFromString(event.getEventDate()), ChronoUnit.HOURS) < 1) {
+            if (publishedTime.until(toDateFromString(event.getEventDate()), ChronoUnit.HOURS) < 1) {
                 throw new IncorrectDataException("Field: eventDate. Error: разница между временем должна быть не меньше 1 часа." +
                         " Value: " + event.getEventDate());
             }
@@ -201,11 +204,11 @@ public class EventServiceImpl implements EventService {
         if (params.getRangeStart() == null) {
             start = LocalDateTime.now();
         } else {
-            start = EventMapper.toDateFromString(params.getRangeStart());
+            start = toDateFromString(params.getRangeStart());
         }
 
         if (params.getRangeEnd() != null) {
-            end = EventMapper.toDateFromString(params.getRangeEnd());
+            end = toDateFromString(params.getRangeEnd());
             if (start.isAfter(end)) {
                 throw new IncorrectDataException("Field: endDate. Error: конец события не может быть в прошлом");
             }
