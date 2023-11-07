@@ -1,5 +1,6 @@
-# Explore with me - микросервисное приложение-афиша мероприятий
-Java, Spring Boot, Spring JPA, PostgreSQL, REST API, Docker, Mockito, JUnit, MapStruct, Lombok
+# Explore with me
+*  микросервисное приложение, афиша мероприятий
+* стек: Java, Spring Boot, Spring JPA, PostgreSQL, REST API, Docker, Mockito, JUnit, MapStruct, Lombok
 
 ## О проекте
 Приложение для размещения мероприятий и поиска компаний для участия в них
